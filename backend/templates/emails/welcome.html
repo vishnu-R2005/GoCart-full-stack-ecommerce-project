@@ -1,0 +1,4 @@
+<h2>Welcome to GoCart!</h2>
+<p>Hi {{ user.first_name|default:user.email }},</p>
+<p>Your account is verified. Start shopping smarter and faster today!</p>
+<p><a href="{{ FRONTEND_URL|default:'http://localhost:5173' }}">Start Shopping</a></p>

@@ -1,0 +1,3 @@
+<h2>Your order has shipped!</h2>
+<p>Order {{ order.order_number }} is on its way.</p>
+{% if order.tracking_number %}<p>Tracking: {{ order.tracking_number }}</p>{% endif %}

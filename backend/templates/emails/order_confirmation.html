@@ -1,0 +1,4 @@
+<h2>Order Confirmed - {{ order.order_number }}</h2>
+<p>Hi {{ order.user.first_name|default:order.user.email }},</p>
+<p>Thank you for your order! Total: ₹{{ order.total }}</p>
+<ul>{% for item in order.items.all %}<li>{{ item.product_name }} x{{ item.quantity }} - ₹{{ item.total_price }}</li>{% endfor %}</ul>

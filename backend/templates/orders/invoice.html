@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice - {{ order.order_number }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .header { text-align: center; border-bottom: 2px solid #f90; padding-bottom: 20px; }
+        .header h1 { color: #f90; margin: 0; }
+        .header p { color: #666; margin: 5px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f5f5f5; }
+        .totals { text-align: right; }
+        .totals td { border: none; padding: 5px 10px; }
+        .total-row { font-weight: bold; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>GoCart</h1>
+        <p>Shop Smarter. Shop Faster.</p>
+        <p>Invoice #{{ order.order_number }}</p>
+        <p>Date: {{ order.created_at|date:"F d, Y" }}</p>
+    </div>
+    <div>
+        <h3>Ship To:</h3>
+        <p>{{ shipping.full_name }}<br>
+        {{ shipping.address_line1 }}<br>
+        {% if shipping.address_line2 %}{{ shipping.address_line2 }}<br>{% endif %}
+        {{ shipping.city }}, {{ shipping.state }} {{ shipping.postal_code }}<br>
+        {{ shipping.country }}</p>
+    </div>
+    <table>
+        <thead>
+            <tr><th>Item</th><th>SKU</th><th>Qty</th><th>Price</th><th>Total</th></tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.product_name }}</td>
+                <td>{{ item.product_sku }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.unit_price }}</td>
+                <td>₹{{ item.total_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <table class="totals">
+        <tr><td>Subtotal:</td><td>₹{{ order.subtotal }}</td></tr>
+        <tr><td>Tax:</td><td>₹{{ order.tax }}</td></tr>
+        {% if order.discount %}<tr><td>Discount:</td><td>-₹{{ order.discount }}</td></tr>{% endif %}
+        <tr class="total-row"><td>Total:</td><td>₹{{ order.total }}</td></tr>
+    </table>
+</body>
+</html>
