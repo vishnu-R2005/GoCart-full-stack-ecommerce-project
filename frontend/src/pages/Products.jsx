@@ -13,7 +13,7 @@ export default function Products() {
   useEffect(() => {
     dispatch(fetchProducts({ search, page, ordering: '-created_at' }))
   }, [dispatch, search, page])
-
+  console.log("ProductCard product:", product)
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="flex flex-col sm:flex-row gap-4 mb-8">
