@@ -49,6 +49,8 @@ api.interceptors.request.use((config) => {
 
   return config
 })
+
+
 export default api
 
 // Auth
@@ -86,6 +88,18 @@ export const cartAPI = {
   update: (productId, quantity) => api.patch(`/cart/update/${productId}/`, { quantity }),
   remove: (productId) => api.delete(`/cart/remove/${productId}/`),
   clear: () => api.delete('/cart/clear/'),
+}
+
+export const productImagesAPI = {
+  upload: (formData) =>
+    api.post('/products/images/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }),
+
+  remove: (imageId) =>
+    api.delete(`/products/images/${imageId}/`),
 }
 
 // Wishlist
