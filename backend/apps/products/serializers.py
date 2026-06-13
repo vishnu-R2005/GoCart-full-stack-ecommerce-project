@@ -24,8 +24,14 @@ class CategoryListSerializer(serializers.ModelSerializer):
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ['id', 'image', 'alt_text', 'is_primary', 'order']
-
+        fields = [
+            'id',
+            'product',
+            'image',
+            'alt_text',
+            'is_primary',
+            'order',
+        ]
 
 class ProductListSerializer(serializers.ModelSerializer):
     effective_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
