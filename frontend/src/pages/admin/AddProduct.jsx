@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useEffect,useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { productsAPI } from '../../services/api'
 
-export default function AddProduct() {
+export default function AddProducts() {
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
@@ -56,6 +56,24 @@ export default function AddProduct() {
       setLoading(false)
     }
   }
+
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+  const loadCategories = async () => {
+    try {
+      const { data } = await productsAPI.categories()
+
+      setCategories(data.results || data)
+    } catch (error) {
+      console.error(error)
+      toast.error('Failed to load categories')
+    }
+  }
+
+  loadCategories()
+}, [])
+
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -128,14 +146,26 @@ export default function AddProduct() {
             onChange={handleChange}
           />
 
-          <input
-            name="category"
-            type="number"
-            placeholder="Category ID"
-            className="input-field"
-            onChange={handleChange}
-            required
-          />
+         <select
+  name="category"
+  value={formData.category}
+  onChange={handleChange}
+  className="input-field"
+  required
+>
+    <option value="">
+        Select Category
+    </option>
+
+    {categories.map((category) => (
+        <option
+        key={category.id}
+        value={category.id}
+        >
+        {category.name}
+        </option>
+    ))}
+    </select>
 
         </div>
 

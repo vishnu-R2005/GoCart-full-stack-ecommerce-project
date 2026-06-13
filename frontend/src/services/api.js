@@ -76,6 +76,7 @@ export const productsAPI = {
   create: (data) => api.post('/products/', data),
   update: (slug, data) => api.patch(`/products/${slug}/`, data),
   delete: (slug) => api.delete(`/products/${slug}/`),
+  
 }
 
 // Cart

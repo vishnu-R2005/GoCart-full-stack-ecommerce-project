@@ -22,6 +22,8 @@ const Orders = lazy(() => import('./pages/Orders'))
 const OrderDetail = lazy(() => import('./pages/OrderDetail'))
 const Profile = lazy(() => import('./pages/Profile'))
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
+const AddProducts = lazy(() => import('./pages/admin/AddProduct'))
+const EditProduct = lazy(() => import('./pages/admin/EditProduct'))
 
 function PageLoader() {
   return (
@@ -67,6 +69,7 @@ export default function App() {
             <Route path="/admin" element={<ProtectedRoute adminOnly><AdminDashboard /></ProtectedRoute>} />
             <Route path="/admin/products" element={<ProtectedRoute adminOnly><AdminProducts /></ProtectedRoute>}/>
             <Route path="/admin/products/add" element={<ProtectedRoute adminOnly><AddProducts /></ProtectedRoute>}/>
+            <Route path="/admin/products/edit/:slug"element={<ProtectedRoute adminOnly><EditProduct /></ProtectedRoute>}/>
           </Routes>
         </Suspense>
       </Layout>
