@@ -73,6 +73,9 @@ export const productsAPI = {
   bestSellers: () => api.get('/products/best_sellers/'),
   related: (slug) => api.get(`/products/${slug}/related/`),
   categories: (tree = false) => api.get('/products/categories/', { params: tree ? { tree: true } : {} }),
+  create: (data) => api.post('/products/', data),
+  update: (slug, data) => api.patch(`/products/${slug}/`, data),
+  delete: (slug) => api.delete(`/products/${slug}/`),
 }
 
 // Cart
