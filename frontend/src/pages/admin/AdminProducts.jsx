@@ -97,10 +97,10 @@ export default function AdminProducts() {
                 <td className="p-3">
                   {product.primary_image ? (
                     <img
-                      src={`http://localhost:8000${product.primary_image}`}
-                      alt={product.name}
-                      className="w-12 h-12 object-cover rounded"
-                    />
+                        src={product.primary_image}
+                        alt={product.name}
+                        className="w-12 h-12 object-cover rounded"
+                        />
                   ) : (
                     'No Image'
                   )}

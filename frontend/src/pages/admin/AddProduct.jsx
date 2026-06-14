@@ -1,10 +1,10 @@
 import { useEffect,useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { productsAPI } from '../../services/api'
-
+import { productsAPI, productImagesAPI } from '../../services/api'
 export default function AddProducts() {
   const navigate = useNavigate()
+  
 
   const [formData, setFormData] = useState({
     name: '',
@@ -20,6 +20,7 @@ export default function AddProducts() {
   })
 
   const [loading, setLoading] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(null)
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -36,23 +37,35 @@ export default function AddProducts() {
     try {
       setLoading(true)
 
-      await productsAPI.create({
-        ...formData,
-        price: Number(formData.price),
-        discount_price: formData.discount_price
-          ? Number(formData.discount_price)
-          : null,
-        stock: Number(formData.stock),
-        category: Number(formData.category),
-      })
+      const { data: product } = await productsAPI.create({
+  ...formData,
+  price: Number(formData.price),
+  discount_price: formData.discount_price
+    ? Number(formData.discount_price)
+    : null,
+  stock: Number(formData.stock),
+  category: Number(formData.category),
+})
+console.log("PRODUCT ID:", product.id)
+console.log("PRODUCT RESPONSE:", product)
+if (selectedImage) {
+  const imageData = new FormData()
+
+  imageData.append('product', product.id)
+  imageData.append('image', selectedImage)
+  imageData.append('alt_text', formData.name)
+  imageData.append('is_primary', true)
+  imageData.append('order', 1)
+
+  await productImagesAPI.upload(imageData)
+}
 
       toast.success('Product created successfully')
 
       navigate('/admin/products')
     } catch (error) {
-      console.error(error)
-      toast.error('Failed to create product')
-    } finally {
+  console.log(JSON.stringify(error.response?.data, null, 2))
+}finally {
       setLoading(false)
     }
   }
@@ -190,6 +203,17 @@ export default function AddProducts() {
             Active
           </label>
 
+        </div>
+        <div>
+        <label className="block mb-2 font-medium">
+            Product Image
+        </label>
+
+        <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setSelectedImage(e.target.files[0])}
+        />
         </div>
 
         <button

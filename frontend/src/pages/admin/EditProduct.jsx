@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { productsAPI } from '../../services/api'
+import { productsAPI,productImagesAPI } from '../../services/api'
 
 export default function EditProduct() {
-  const { slug } = useParams()
-  const navigate = useNavigate()
-
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [categories, setCategories] = useState([])
+    const { slug } = useParams()
+    const navigate = useNavigate()
+    
+    const [loading, setLoading] = useState(true)
+    const [saving, setSaving] = useState(false)
+    const [categories, setCategories] = useState([])
+    const [selectedImage, setSelectedImage] = useState(null)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -78,6 +79,19 @@ export default function EditProduct() {
         ...formData,
         category: Number(formData.category),
       })
+      if (selectedImage) {
+        const { data: product } = await productsAPI.get(slug)
+
+        const imageData = new FormData()
+
+        imageData.append('product', product.id)
+        imageData.append('image', selectedImage)
+        imageData.append('alt_text', formData.name)
+        imageData.append('is_primary', true)
+        imageData.append('order', 1)
+
+        await productImagesAPI.upload(imageData)
+        }
 
       toast.success('Product updated successfully')
 
@@ -89,8 +103,7 @@ export default function EditProduct() {
     }
   }
 
-  if (loading) return <div className="p-8">Loading...</div>
-
+if (loading) return <div className="p-8">Loading...</div>
  return (
   <div className="max-w-4xl mx-auto px-4 py-8">
     <h1 className="text-2xl font-bold mb-6">
@@ -193,6 +206,17 @@ export default function EditProduct() {
         Featured Product
       </label>
 
+        <div className="space-y-3">
+    <label className="block font-medium">
+        Product Image
+    </label>
+
+    <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setSelectedImage(e.target.files[0])}
+    />
+    </div>
       <button
         type="submit"
         disabled={saving}
