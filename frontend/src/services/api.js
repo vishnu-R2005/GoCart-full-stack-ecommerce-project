@@ -97,6 +97,13 @@ export const productImagesAPI = {
         'Content-Type': 'multipart/form-data',
       },
     }),
+    
+    update: (imageId, formData) =>
+  api.patch(`/products/images/${imageId}/`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  }),
 
   remove: (imageId) =>
     api.delete(`/products/images/${imageId}/`),
