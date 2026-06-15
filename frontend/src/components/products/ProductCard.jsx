@@ -40,7 +40,11 @@ export default function ProductCard({ product }) {
     <Link to={`/products/${product.slug}`} className="card overflow-hidden hover:shadow-lg transition-shadow group">
       <div className="relative aspect-square bg-gray-100 dark:bg-gray-700">
         {product.primary_image ? (
-          <img src={`http://localhost:8000${product.primary_image}`}
+          <img src={
+           product.primary_image?.startsWith('http')
+           ? product.primary_image
+          : `http://localhost:8000${product.primary_image}`
+          }
                alt={product.name} 
                className="w-full h-full object-cover" 
                loading="lazy" 
