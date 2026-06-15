@@ -44,24 +44,9 @@ export default function Checkout() {
         return
       }
 
-      const { data: payRes } = await paymentsAPI.createOrder(order.id)
-      const options = {
-        key: payRes.razorpay_key_id || import.meta.env.VITE_RAZORPAY_KEY_ID,
-        amount: payRes.amount,
-        currency: payRes.currency,
-        order_id: payRes.razorpay_order_id,
-        name: 'GoCart',
-        description: `Order ${order.order_number}`,
-        handler: async (response) => {
-          await paymentsAPI.verify({
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-          })
-          toast.success('Payment successful!')
-          navigate(`/orders/${order.id}`)
-        },
-      }
+     toast.success('Order placed successfully!')
+navigate(`/orders/${order.id}`)
+return
       const rzp = new window.Razorpay(options)
       rzp.open()
     } catch (err) {
