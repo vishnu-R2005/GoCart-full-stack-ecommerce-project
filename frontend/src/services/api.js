@@ -49,6 +49,8 @@ api.interceptors.request.use((config) => {
 
   return config
 })
+
+
 export default api
 
 // Auth
@@ -73,6 +75,10 @@ export const productsAPI = {
   bestSellers: () => api.get('/products/best_sellers/'),
   related: (slug) => api.get(`/products/${slug}/related/`),
   categories: (tree = false) => api.get('/products/categories/', { params: tree ? { tree: true } : {} }),
+  create: (data) => api.post('/products/', data),
+  update: (slug, data) => api.patch(`/products/${slug}/`, data),
+  delete: (slug) => api.delete(`/products/${slug}/`),
+  
 }
 
 // Cart
@@ -82,6 +88,18 @@ export const cartAPI = {
   update: (productId, quantity) => api.patch(`/cart/update/${productId}/`, { quantity }),
   remove: (productId) => api.delete(`/cart/remove/${productId}/`),
   clear: () => api.delete('/cart/clear/'),
+}
+
+export const productImagesAPI = {
+  upload: (formData) =>
+    api.post('/products/images/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }),
+
+  remove: (imageId) =>
+    api.delete(`/products/images/${imageId}/`),
 }
 
 // Wishlist

@@ -3,7 +3,7 @@ from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-
+from rest_framework.parsers import MultiPartParser,FormParser
 from apps.common.permissions import IsAdmin, IsAdminOrReadOnly
 
 from .filters import ProductFilter
@@ -21,6 +21,8 @@ from .serializers import (
 )
 from .services import CategoryService, ProductService, ReviewService, WishlistService
 
+from .models import ProductImage
+from .serializers import ProductImageSerializer
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.filter(is_active=True)
@@ -172,3 +174,18 @@ class WishlistViewSet(viewsets.ViewSet):
     def remove(self, request, product_id=None):
         WishlistService.remove_from_wishlist(request.user, product_id)
         return Response({'success': True, 'message': 'Removed from wishlist.'})
+
+class ProductImageViewSet(viewsets.ModelViewSet):
+    queryset = ProductImage.objects.all()
+    serializer_class = ProductImageSerializer
+    permission_classes = [IsAdmin]
+
+    parser_classes = [MultiPartParser, FormParser]
+
+    @extend_schema(tags=['Product Images'])
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+    @extend_schema(tags=['Product Images'])
+    def destroy(self, request, *args, **kwargs):
+        return super().destroy(request, *args, **kwargs)
