@@ -8,7 +8,7 @@ from django.utils import timezone
 from apps.accounts.models import User
 from apps.orders.models import Order, OrderItem, OrderStatus
 from apps.payments.models import Payment, PaymentStatus
-from apps.products.models import Category, Product
+from apps.products.models import  Product
 
 
 class AnalyticsService:
