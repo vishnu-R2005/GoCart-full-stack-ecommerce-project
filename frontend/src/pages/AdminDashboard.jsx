@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts'
 import { analyticsAPI } from '../services/api'
+import { Link } from 'react-router-dom'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null)
@@ -30,6 +31,48 @@ export default function AdminDashboard() {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold mb-2">GoCart Admin Dashboard</h1>
       <p className="text-gray-500 mb-8">Shop Smarter. Shop Faster.</p>
+      <div className="grid md:grid-cols-3 gap-4 mb-8">
+
+  <Link
+    to="/admin/products"
+    className="card p-6 hover:shadow-lg transition"
+  >
+    <h3 className="font-bold text-lg mb-2">
+      📦 Manage Products
+    </h3>
+
+    <p className="text-gray-500">
+      View, edit and delete products
+    </p>
+  </Link>
+
+  <Link
+    to="/admin/products/add"
+    className="card p-6 hover:shadow-lg transition"
+  >
+    <h3 className="font-bold text-lg mb-2">
+      ➕ Add Product
+    </h3>
+
+    <p className="text-gray-500">
+      Create a new product
+    </p>
+  </Link>
+
+  <Link
+    to="/admin/products"
+    className="card p-6 hover:shadow-lg transition"
+  >
+    <h3 className="font-bold text-lg mb-2">
+      📊 Inventory
+    </h3>
+
+    <p className="text-gray-500">
+      Check stock levels and pricing
+    </p>
+  </Link>
+
+</div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
         {statCards.map((s) => (

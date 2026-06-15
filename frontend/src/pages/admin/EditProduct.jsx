@@ -79,19 +79,33 @@ export default function EditProduct() {
         ...formData,
         category: Number(formData.category),
       })
-      if (selectedImage) {
-        const { data: product } = await productsAPI.get(slug)
+    if (selectedImage) {
+  const { data: product } = await productsAPI.get(slug)
 
-        const imageData = new FormData()
+  console.log("EDIT PRODUCT:", product)
+  console.log("PRODUCT ID:", product.id)
+  console.log("PRODUCT IMAGES:", product.images)
 
-        imageData.append('product', product.id)
-        imageData.append('image', selectedImage)
-        imageData.append('alt_text', formData.name)
-        imageData.append('is_primary', true)
-        imageData.append('order', 1)
+  const imageData = new FormData()
 
-        await productImagesAPI.upload(imageData)
-        }
+  imageData.append('image', selectedImage)
+  imageData.append('alt_text', formData.name)
+  imageData.append('is_primary', true)
+  imageData.append('order', 1)
+
+  if (product.images?.length > 0) {
+    console.log("Updating image:", product.images[0].id)
+
+    await productImagesAPI.update(
+      product.images[0].id,
+      imageData
+    )
+  } else {
+    imageData.append('product', product.id)
+
+    await productImagesAPI.upload(imageData)
+  }
+}
 
       toast.success('Product updated successfully')
 
