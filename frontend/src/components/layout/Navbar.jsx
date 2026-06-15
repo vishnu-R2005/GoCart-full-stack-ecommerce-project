@@ -40,27 +40,68 @@ export default function Navbar() {
               {darkMode ? '☀️' : '🌙'}
             </button>
 
-            {isAuthenticated ? (
-              <>
-                {user?.role === 'admin' && (
-                  <Link to="/admin" className="hover:text-gocart-orange text-sm">Admin</Link>
-                )}
-                <Link to="/orders" className="hover:text-gocart-orange text-sm hidden sm:inline">Orders</Link>
-                <Link to="/wishlist" className="hover:text-gocart-orange text-sm hidden sm:inline">Wishlist</Link>
-                <Link to="/profile" className="hover:text-gocart-orange text-sm hidden sm:inline">Profile</Link>
-                <Link to="/cart" className="relative hover:text-gocart-orange">
-                  🛒
-                  {itemCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-gocart-orange text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                      {itemCount}
-                    </span>
-                  )}
-                </Link>
-                <button onClick={() => dispatch(logout())} className="text-sm hover:text-gocart-orange">
-                  Logout
-                </button>
-              </>
-            ) : (
+          {isAuthenticated ? (
+  user?.role === 'admin' ? (
+    <>
+      <Link
+        to="/admin"
+        className="hover:text-gocart-orange text-sm"
+      >
+        Admin
+      </Link>
+
+      <button
+        onClick={() => dispatch(logout())}
+        className="text-sm hover:text-gocart-orange"
+      >
+        Logout
+      </button>
+    </>
+  ) : (
+    <>
+      <Link
+        to="/orders"
+        className="hover:text-gocart-orange text-sm hidden sm:inline"
+      >
+        Orders
+      </Link>
+
+      <Link
+        to="/wishlist"
+        className="hover:text-gocart-orange text-sm hidden sm:inline"
+      >
+        Wishlist
+      </Link>
+
+      <Link
+        to="/profile"
+        className="hover:text-gocart-orange text-sm hidden sm:inline"
+      >
+        Profile
+      </Link>
+
+      <Link
+        to="/cart"
+        className="relative hover:text-gocart-orange"
+      >
+        🛒
+
+        {itemCount > 0 && (
+          <span className="absolute -top-2 -right-2 bg-gocart-orange text-xs rounded-full w-5 h-5 flex items-center justify-center">
+            {itemCount}
+          </span>
+        )}
+      </Link>
+
+      <button
+        onClick={() => dispatch(logout())}
+        className="text-sm hover:text-gocart-orange"
+      >
+        Logout
+      </button>
+    </>
+  )
+) : (
               <>
                 <Link to="/login" className="hover:text-gocart-orange text-sm">Login</Link>
                 <Link to="/register" className="btn-primary text-sm py-1.5 px-3">Sign Up</Link>
