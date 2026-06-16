@@ -5,6 +5,7 @@ from apps.orders.models import OrderItem, OrderStatus
 
 from .models import Product, Review
 from .repositories import CategoryRepository, ProductRepository, ReviewRepository, WishlistRepository
+from .models import WishlistItem
 
 
 class CategoryService:
@@ -109,11 +110,11 @@ class WishlistService:
             from rest_framework.exceptions import ValidationError
             raise ValidationError({'detail': 'Product not found.'})
         return WishlistRepository.add(user, product)
+        
 
     @staticmethod
     def remove_from_wishlist(user, product_id):
-        product = ProductRepository.get_by_id(product_id)
-        if not product:
-            from rest_framework.exceptions import ValidationError
-            raise ValidationError({'detail': 'Product not found.'})
-        WishlistRepository.remove(user, product)
+        WishlistItem.objects.filter(
+            user=user,
+            product_id=product_id
+        ).delete()

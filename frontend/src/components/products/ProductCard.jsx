@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import { addToCart } from '../../store/slices/cartSlice'
 import { wishlistAPI } from '../../services/api'
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, isWishlistPage = false }) {  
   const dispatch = useDispatch()
   const { isAuthenticated } = useSelector((s) => s.auth)
 
@@ -22,19 +22,33 @@ export default function ProductCard({ product }) {
     }
   }
 
-  const handleWishlist = async (e) => {
-    e.preventDefault()
-    if (!isAuthenticated) {
-      toast.error('Please login first')
-      return
-    }
-    try {
+const handleWishlist = async (e) => {
+  e.preventDefault()
+
+  console.log("PRODUCT:", product)
+
+  if (!isAuthenticated) {
+    toast.error('Please login first')
+    return
+  }
+
+  try {
+    if (isWishlistPage) {
+      console.log("Removing:", product.id)
+
+      await wishlistAPI.remove(product.id)
+
+      toast.success('Removed from wishlist!')
+      window.location.reload()
+    } else {
       await wishlistAPI.add(product.id)
       toast.success('Added to wishlist!')
-    } catch {
-      toast.error('Failed to add to wishlist')
     }
+  } catch (err) {
+    console.log(err.response?.data)
+    toast.error('Wishlist update failed')
   }
+}
 
   return (
     <Link to={`/products/${product.slug}`} className="card overflow-hidden hover:shadow-lg transition-shadow group">
@@ -76,9 +90,13 @@ export default function ProductCard({ product }) {
           <button onClick={handleAddToCart} className="btn-primary flex-1 text-sm py-1.5">
             Add to Cart
           </button>
-          <button onClick={handleWishlist} className="btn-secondary px-3" aria-label="Add to wishlist">
-            ♥
-          </button>
+          <button
+  onClick={handleWishlist}
+  className="btn-secondary px-3"
+  aria-label="Wishlist"
+>
+  {isWishlistPage ? '❤️' : '🤍'}
+</button>
         </div>
       </div>
     </Link>

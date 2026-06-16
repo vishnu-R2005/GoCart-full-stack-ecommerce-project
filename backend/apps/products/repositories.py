@@ -106,8 +106,18 @@ class WishlistRepository:
         return item, created
 
     @staticmethod
-    def remove(user, product):
-        WishlistItem.objects.filter(user=user, product=product).delete()
+    def remove_by_product_id(user, product_id):
+        WishlistItem.objects.filter(
+            user=user,
+            product_id=product_id
+        ).delete()
+
+    @staticmethod
+    def remove_from_wishlist(user, product_id):
+        WishlistRepository.remove_by_product_id(
+            user,
+            product_id
+        )
 
     @staticmethod
     def exists(user, product):

@@ -2,12 +2,16 @@ import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleDarkMode } from '../../store/slices/themeSlice'
 import { logout } from '../../store/slices/authSlice'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function Navbar() {
   const dispatch = useDispatch()
   const { isAuthenticated, user } = useSelector((s) => s.auth)
   const { itemCount } = useSelector((s) => s.cart)
   const { darkMode } = useSelector((s) => s.theme)
+  const navigate = useNavigate()
+  const [search, setSearch] = useState('')
 
   return (
     <header className="bg-gocart-dark text-white sticky top-0 z-50 shadow-lg">
@@ -18,14 +22,31 @@ export default function Navbar() {
             <p className="text-xs text-gray-400 hidden sm:block">Shop Smarter. Shop Faster.</p>
           </Link>
 
-          <form className="flex-1 max-w-xl hidden md:block" onSubmit={(e) => e.preventDefault()}>
+          <form
+            className="flex-1 max-w-xl hidden md:block"
+            onSubmit={(e) => {
+              e.preventDefault()
+
+              if (search.trim()) {
+                navigate(`/products?search=${encodeURIComponent(search)}`)
+              } else {
+                navigate('/products')
+              }
+            }}
+          >
             <div className="flex">
               <input
                 type="search"
                 placeholder="Search products..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 className="flex-1 px-4 py-2 rounded-l-lg text-gray-900 outline-none"
               />
-              <button type="submit" className="bg-gocart-orange px-4 py-2 rounded-r-lg hover:bg-orange-600">
+
+              <button
+                type="submit"
+                className="bg-gocart-orange px-4 py-2 rounded-r-lg hover:bg-orange-600"
+              >
                 Search
               </button>
             </div>
