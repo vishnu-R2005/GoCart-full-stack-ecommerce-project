@@ -11,8 +11,8 @@ export default function Checkout() {
   const [addresses, setAddresses] = useState([])
   const [coupon, setCoupon] = useState('')
   const [loading, setLoading] = useState(false)
+  const [paymentMethod, setPaymentMethod] = useState('cod')
   const { register, handleSubmit } = useForm()
-
   useEffect(() => {
     addressesAPI.list().then(({ data }) => setAddresses(data.results || []))
   }, [])
@@ -100,7 +100,29 @@ export default function Checkout() {
             }} className="btn-secondary">Apply</button>
           </div>
         </div>
+            <div className="card p-6">
+  <h3 className="font-bold mb-4">Payment Method</h3>
 
+  <label className="flex items-center gap-2 mb-3">
+    <input
+      type="radio"
+      value="cod"
+      checked={paymentMethod === 'cod'}
+      onChange={(e) => setPaymentMethod(e.target.value)}
+    />
+    Cash on Delivery
+  </label>
+
+  <label className="flex items-center gap-2">
+    <input
+      type="radio"
+      value="razorpay"
+      checked={paymentMethod === 'razorpay'}
+      onChange={(e) => setPaymentMethod(e.target.value)}
+    />
+    Razorpay (Coming Soon)
+  </label>
+</div>
         <div className="card p-6">
           <textarea {...register('notes')} placeholder="Order notes (optional)" className="input-field" rows={3} />
         </div>
